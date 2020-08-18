@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 import { InscriptionDto } from 'src/dtos/inscription.dto';
 import { TehilimService } from './tehilim.service';
 
@@ -9,5 +9,10 @@ export class TehilimController {
   @Post()
   async inscription(@Body() inscriptionDto: InscriptionDto): Promise<any> {
     return await this.tehilimService.inscription(inscriptionDto);
+  }
+
+  @Get('info')
+  async getInfo(): Promise<any> {
+    return await this.tehilimService.getInfo();
   }
 }

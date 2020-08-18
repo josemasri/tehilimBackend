@@ -164,4 +164,19 @@ export class TehilimService {
       throw new InternalServerErrorException('Ha ocurrido un error');
     }
   }
+
+  async getInfo() {
+    const tehilim = await this.tehilimModel.findOne();
+    const numberUsers = await this.userModel.estimatedDocumentCount();
+    // Calculate tehilims readed
+    const tehilimsReaded =
+      (tehilim.round - 1) * 150 + (150 - tehilim.available.length);
+
+    return {
+      ok: true,
+      rounds: tehilim.round - 1,
+      numberUsers,
+      tehilimsReaded,
+    };
+  }
 }
