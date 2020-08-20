@@ -15,7 +15,16 @@ export class TehilimService {
     @InjectModel(Tehilim.name) private tehilimModel: Model<Tehilim>,
   ) {}
 
-  async inscription({ quantity, mail }: InscriptionDto): Promise<any> {
+  async inscription({
+    quantity,
+    mail,
+    beraja,
+    leiluy,
+    matir,
+    refua,
+    zera,
+    zibug,
+  }: InscriptionDto): Promise<any> {
     let tehilim = await this.createGetTehilimInstance();
     if (quantity === 5 && tehilim.available.includes(119)) {
       try {
@@ -28,11 +37,18 @@ export class TehilimService {
           initial: 119,
           final: 119,
         });
+        user.beraja = beraja;
+        user.refua = refua;
+        user.zibug = zibug;
+        user.zera = zera;
+        user.leiluy = leiluy;
+        user.matir = matir;
         await user.save();
-        await this.sendMail(mail, tehilims);
+        await this.sendMail(mail, tehilims, beraja, refua, zibug, zera, matir);
         return {
           ok: true,
           tehilims,
+          user,
         };
       } catch (error) {
         throw new InternalServerErrorException(
@@ -50,12 +66,18 @@ export class TehilimService {
       }
       await tehilim.save();
       const user = new this.userModel({
+        beraja,
+        refua,
+        zibug,
+        zera,
+        leiluy,
+        matir,
         email: mail,
         initial: tehilims[0],
         final: tehilims[tehilims.length - 1],
       });
       await user.save();
-      await this.sendMail(mail, tehilims);
+      await this.sendMail(mail, tehilims, beraja, refua, zibug, zera, matir);
       return {
         ok: true,
         tehilims,
@@ -67,7 +89,15 @@ export class TehilimService {
     }
   }
 
-  private async sendMail(mail: string, tehilims: number[]): Promise<void> {
+  private async sendMail(
+    mail: string,
+    tehilims: number[],
+    beraja,
+    refua,
+    zibug,
+    zera,
+    matir,
+  ): Promise<void> {
     try {
       await this.mailerService.sendMail({
         to: mail,
@@ -75,6 +105,11 @@ export class TehilimService {
         template: 'mail',
         context: {
           tehilims,
+          beraja,
+          refua,
+          zibug,
+          zera,
+          matir,
         },
         attachments: [
           {
@@ -165,7 +200,7 @@ export class TehilimService {
     }
   }
 
-  async getInfo() {
+  async getInfo(): Promise<any> {
     const tehilim = await this.tehilimModel.findOne();
     const numberUsers = await this.userModel.estimatedDocumentCount();
     // Calculate tehilims readed

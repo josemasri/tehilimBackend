@@ -12,6 +12,24 @@ export class User extends Document {
   @Prop()
   final: number;
 
+  @Prop()
+  beraja: string;
+
+  @Prop()
+  refua: string;
+
+  @Prop()
+  zibug: string;
+
+  @Prop()
+  zera: string;
+
+  @Prop()
+  leiluy: string;
+
+  @Prop()
+  matir: string;
+
   @Prop({
     default: new Date(),
     type: Date,
