@@ -44,7 +44,16 @@ export class TehilimService {
         user.leiluy = leiluy;
         user.matir = matir;
         await user.save();
-        await this.sendMail(mail, tehilims, beraja, refua, zibug, zera, matir);
+        await this.sendMail(
+          mail,
+          tehilims,
+          beraja,
+          refua,
+          zibug,
+          zera,
+          leiluy,
+          matir,
+        );
         return {
           ok: true,
           tehilims,
@@ -77,7 +86,16 @@ export class TehilimService {
         final: tehilims[tehilims.length - 1],
       });
       await user.save();
-      await this.sendMail(mail, tehilims, beraja, refua, zibug, zera, matir);
+      await this.sendMail(
+        mail,
+        tehilims,
+        beraja,
+        refua,
+        zibug,
+        zera,
+        leiluy,
+        matir,
+      );
       return {
         ok: true,
         tehilims,
@@ -92,11 +110,12 @@ export class TehilimService {
   private async sendMail(
     mail: string,
     tehilims: number[],
-    beraja,
-    refua,
-    zibug,
-    zera,
-    matir,
+    beraja: string,
+    refua: string,
+    zibug: string,
+    zera: string,
+    leiluy: string,
+    matir: string,
   ): Promise<void> {
     try {
       await this.mailerService.sendMail({
@@ -109,6 +128,7 @@ export class TehilimService {
           refua,
           zibug,
           zera,
+          leiluy,
           matir,
         },
         attachments: [
