@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
-import { ServeStaticModule } from '@nestjs/serve-static'
 import { MongooseModule } from '@nestjs/mongoose';
 import * as dotenv from 'dotenv';
 import { TehilimModule } from './tehilim/tehilim.module';
-import { join } from 'path';
 
 dotenv.config();
 
